@@ -1,0 +1,13 @@
+---
+- name: Configure an Ethernet connection with static IP
+  hosts: 192.168.33.12
+  become: true
+  tasks:
+  - include_role:
+      name: linux-system-roles.network
+
+    vars:
+      network_connections:
+        - name: eth2
+          state: down
+          persistent_state: absent
