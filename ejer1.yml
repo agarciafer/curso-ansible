@@ -1,0 +1,13 @@
+---
+- name: Install docker Centos
+  gather_facts: No
+  hosts: clientes
+  user: root
+  tasks:
+    - name: paquetes
+      yum:
+        name: "{{  item  }}"
+        state: latest
+      loop:
+       - php
+       - mc
