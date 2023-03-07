@@ -1,0 +1,67 @@
+https://techviewleo.com/list-of-ansible-os-family-distributions-facts/
+
+##Para ver las fats de ansible:
+ansible all -m setup |grep ansible_
+
+ansible all -m setup |grep ansible_distribution
+
+
+---
+- hosts: clientes
+  user: root
+
+  tasks:
+  - name: Install apache para debian
+    apt: 
+      name: {{ item }} 
+      state: latest
+    with_items:
+     - apache2
+	 - php
+	 - php-devel
+	 - mc
+	 - mariadb-server
+	 - samba
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - name: Install httpd para centos
+    yum: 
+      name: {{ item }} 
+      state: latest
+    with_items:
+     - httpd
+	 - httpd-devel
+	 - php*
+	 - mariadb*
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+  - name: restart apache en debian
+    service: 
+      name: apache2 
+      state: started 
+      enabled: yes
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - name: restart httpd en centos
+    service: 
+      name: httpd 
+      state: started 
+      enabled: yes
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+...	
+
+
+-----------------------------------------------------------------
+https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html
+
+
+
+
+- name: paquetes
+  yum:
+    name: "{{  item  }}"
+    state: present
+  loop:
+     - httpd
+     - php*
+	 - mc
