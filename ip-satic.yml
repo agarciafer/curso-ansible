@@ -1,0 +1,22 @@
+---
+- name: Configure an Ethernet connection with static IP
+  hosts: 192.168.33.12
+  become: true
+  tasks:
+  - include_role:
+      name: linux-system-roles.network
+
+    vars:
+      network_connections:
+        - name: eth2
+          type: ethernet
+          autoconnect: yes
+          ip:
+            address:
+              - 192.168.33.51/24
+            gateway4: 192.168.33.1
+            dns:
+              - 8.8.8.8
+            dns_search:
+              - example.com
+          state: up
