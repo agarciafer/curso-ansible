@@ -1,0 +1,13 @@
+cd /curso-ansible
+cp /etc/ansible/playbook-resueltos/playbook_centos_install_docker.yaml .
+ 
+ 
+ 
+vi playbook_centos_install_docker.yaml
+ansible-playbook --help
+ansible-playbook  --syntax-check playbook_centos_install_docker.yaml
+
+ansible-playbook  --list-tags playbook_centos_install_docker.yaml
+
+ansible-playbook --tag install-docker playbook_centos_install_docker.yaml
+ansible-playbook --skip-tag install-docker playbook_centos_install_docker.yaml
