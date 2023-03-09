@@ -1,0 +1,19 @@
+---
+- hosts: clientes
+  user: root
+  vars: 
+    paquetes:
+       - mariadb-server
+       - php
+       - httpd
+       - mc
+
+  tasks:
+  - name: Instalar paquetes
+    yum: 
+      name: "{{ item }}"
+      state: latest
+    loop: "{{ paquetes }}"
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+...
+
