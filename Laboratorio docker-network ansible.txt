@@ -1,0 +1,61 @@
+##Procedimiento funcionando 21/03/2022
+
+##Añadimos al inventario  la variable ansible_python_interpreter para que funciones la instalacion anterior:
+
+vi /etc/ansible/hosts
+
+[docker]
+192.168.33.11 ansible_python_interpreter=/usr/bin/python3
+
+
+##Gestiono dependencias docker-py en el nodo docker
+ansible docker -a "yum -y install python2-pip"
+ansible docker -a "yum -y install python3"
+ansible docker -a "pip3 install docker-py"
+ 
+ 
+ ##Lanzamos un contenedor llamada  ansible-web en avance en el nodo docker:
+ ansible docker  -a "docker run -dtiP --name ansible-web nbrown/nginxhello"
+ 
+  ansible docker  -a "docker run -dti -p 81:80 --name ansible-web nbrown/nginxhello"
+
+ 
+ ##Ahora lanzamos el playbook:
+ 
+vi docker-network.yml 
+
+- name: Crear red y conectar el contedor ansible-web
+  hosts: docker
+  remote_user: root
+  tasks:
+#  - pip:
+ #    name: docker-py
+  #   state: latest
+  - name: crear red llama da ansible
+    docker_network:
+      name: ansible
+      state: present
+      connected:
+        - ansible-web
+...
+ 
+ 
+ansible-playbook docker-network.yml
+ 
+ ansible docker  -a "docker ps -l"
+192.168.33.11 | CHANGED | rc=0 >>
+CONTAINER ID   IMAGE               COMMAND                  CREATED         STATUS         PORTS                   NAMES
+363235c1f125   nbrown/nginxhello   "/docker-entrypoint.…"   5 minutes ago   Up 5 minutes   0.0.0.0:49154->80/tcp   ansible-web
+
+192.168.33.11:puertonateado
+192.168.33.11:49154
+ 
+ ansible docker -a "docker network ls -f name=ansible"
+ 
+ansible docker -m shell -a "docker network inspect ansible |grep -A 10 -w Name" 
+ansible docker -m shell -a "docker inspect ansible-web |grep IPAddress"
+
+
+ ansible docker  -a "docker rm -f ansible-web"
+  ansible docker  -a "docker network rm  ansible"
+
