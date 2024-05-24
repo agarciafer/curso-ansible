@@ -1,0 +1,22 @@
+- name: Modificar zona horaria con modulo command
+  hosts: clientes
+  remote_user: root
+  tasks:
+    - name: Cambiar zona horaria
+      command: timedatectl set-timezone Europe/Madrid
+      register: timedatectl_output
+
+    - name: Cambiar Lang
+      command: localectl set-locale LANG=es_ES.utf8
+      register: localectllang_output
+
+    - name: Cambiar keymap
+      command: localectl set-keymap es
+      register: localectlkeymap_output
+
+    - debug: var=timedatectl_output
+
+    - debug: var=localectllang_output
+
+    - name: Printar solo la salida lines de la tarea el teturn control
+      debug: var=localectlkeymap_output.rc
