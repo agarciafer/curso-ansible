@@ -90,3 +90,10 @@
     - debug: var=localectllang_output
     - name: Printar solo la salida lines de la tarea el return control
       debug: var=localectlkeymap_output.rc
+    - name: Crear un fichero en el sistema
+    
+    - name: Crear el fichero /ruta/a/tu_fichero.txt
+      ansible.builtin.file:
+        path: /tmp/vinernes04-10-2024  # Especifica la ruta del archivo
+        state: touch  # Asegura que el archivo sea creado si no existe
+        mode: '0644'  # Opcional: Establece los permisos del archivo  
