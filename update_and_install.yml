@@ -1,6 +1,6 @@
 ---
 - name: Update Linux systems and install packages
-  hosts: localhost
+  hosts: all
   become: yes  # Escalado de privilegios para ejecutar tareas administrativas
   tasks:
     - name: Update all packages to the latest version
@@ -92,6 +92,6 @@
       debug: var=localectlkeymap_output.rc
     - name: Crear el fichero en /tmp
       ansible.builtin.file:
-        path: /tmp/vinernes04-10-2024  # Especifica la ruta del archivo
+        path: /tmp/vinernes04-10-2024-v1  # Especifica la ruta del archivo
         state: touch  # Asegura que el archivo sea creado si no existe
         mode: '0644'  # Opcional: Establece los permisos del archivo  
