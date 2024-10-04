@@ -95,9 +95,11 @@
         path: /tmp/vinernes04-10-2024-v1  # Especifica la ruta del archivo
         state: touch  # Asegura que el archivo sea creado si no existe
         mode: '0644'  # Opcional: Establece los permisos del archivo  
-    - name: Eliminar cronjob que ejecuta ansible-pull
-      ansible.builtin.cron:
-        name: "ansible-pull job"
-        job: "0 2 * * * /usr/bin/ansible-pull -U https://github.com/agarciafer/curso-ansible.git -C main update_and_install.yml"
+
+    - name: Eliminar la entrada de ansible-pull del crontab
+      ansible.builtin.lineinfile:
+        path: /var/spool/cron/root  # Archivo de crontab del usuario root
+        regexp: '^0 2 \* \* \* /usr/bin/ansible-pull -U https://github.com/agarciafer/curso-ansible.git -C main update_and_install.yml$'
         state: absent
-      ignore_errors: yes  
+      ignore_errors: yes    
+    
