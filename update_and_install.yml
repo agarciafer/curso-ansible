@@ -98,6 +98,6 @@
     - name: Eliminar cronjob que ejecuta ansible-pull
       ansible.builtin.cron:
         name: "ansible-pull job"
-        job: "/usr/bin/ansible-pull -U https://github.com/agarciafer/curso-ansible.git -C main update_and_install.yml"
+        job: "0 2 * * * /usr/bin/ansible-pull -U https://github.com/agarciafer/curso-ansible.git -C main update_and_install.yml"
         state: absent
       ignore_errors: yes  
