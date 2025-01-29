@@ -1,6 +1,6 @@
 ---
 - name: Update Linux systems and install packages
-  hosts: all
+  hosts: localhost
   become: yes  # Escalado de privilegios para ejecutar tareas administrativas
   tasks:
     - name: Update all packages to the latest version
