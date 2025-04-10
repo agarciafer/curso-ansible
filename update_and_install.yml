@@ -92,7 +92,7 @@
       debug: var=localectlkeymap_output.rc
     - name: Crear el fichero en /tmp
       ansible.builtin.file:
-        path: /tmp/Jueves-10-04-2025-version1  # Especifica la ruta del archivo
+        path: /tmp/Jueves-10-04-2025-version-2  # Especifica la ruta del archivo
         state: touch  # Asegura que el archivo sea creado si no existe
         mode: '0644'  # Opcional: Establece los permisos del archivo  
 
