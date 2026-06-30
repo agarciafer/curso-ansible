@@ -1,0 +1,11 @@
+---
+- name: Ejemplo de modulo fetch
+  hosts: clientes
+  tasks:
+    - name: Utilizando fetch para copia de seguridad
+      fetch: src=/etc/hostname  dest=/tmp/backup/{{ansible_hostname}}_hostname-{{ ansible_date_time.date }} flat=yes
+
+    - name: Utilizando fetch para copia de seguridad con flat solo copia el fichero, el destino tiene que ser un fichero
+      fetch: src=/etc/passwd  dest=/tmp/backup/{{ansible_hostname}}_passwd-{{ ansible_date_time.date }}-{{ ansible_date_time.time }}  flat=yes
+      #fetch: src=/etc/passwd  dest=/tmp/backup/  flat=yes
+
