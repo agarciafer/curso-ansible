@@ -1,0 +1,26 @@
+---
+- hosts: cliente12
+  become: true
+  become_method: sudo
+  user: root
+
+  tasks:
+  - name: Install nfs utilities
+    package:
+      name: nfs-utils
+      state: present
+    ignore_errors: true  
+
+  - name: Add the NFS share and mount it with fstab
+    mount:
+      path: /share
+      src: 192.168.33.11:/share/folder
+      state: mounted
+      fstype: nfs
+    ignore_errors: True
+    register: salida
+    async: 30
+  - name: Debug salida 
+    debug: msg=" {{ salida }}"
+    
+    

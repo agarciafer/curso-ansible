@@ -1,0 +1,31 @@
+- name: Install and configure nginx
+  hosts: 192.168.33.11
+  become: true
+  become_method: sudo
+  tasks:
+    - name: Add epel-release repo
+      yum:
+       name: epel-release
+       state: present
+    - name: Install Nginx
+      package:
+        name: nginx
+        state: latest
+    - name: Create web server directory
+      file:
+        path: /srv/website/www
+        state: directory
+        mode: '0755'
+    - name: Copy Nginx web server configuration
+      template:
+        src: nginx.j2
+        dest: /etc/nginx/conf.d/website.conf
+    - name: Copy Nginx web server index.html
+      template:
+        src: nginx_html.j2
+        dest: /srv/website/www/index.html
+    - name: Start and enable Nginx
+      service:
+        name: nginx
+        state: started
+        enabled: true

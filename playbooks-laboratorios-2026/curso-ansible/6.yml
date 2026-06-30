@@ -1,0 +1,6 @@
+- hosts: cliente12
+  vars:
+    ip: "{{ ansible_nodename }}"
+  tasks:
+  - debug:
+      msg: "{{ ip.split('.')[0] | lower }}"

@@ -1,0 +1,32 @@
+---
+- hosts: cliente12
+  become: true
+  become_method: sudo
+
+  tasks:
+  - name: Lanzar comando
+    command: /bin/sleep 60
+    ignore_errors: True
+    register: estado_sleep
+    async: 90
+    poll: 0
+
+  - name: Lanzar comando uname -a
+    command: /bin/uname -a
+    ignore_errors: True
+    register: salida_uname
+
+  - name: "Debug salida"
+    debug: msg="{{ salida_uname }}" 
+    
+  - name: "Esperar la tarea del comando sleep segundo plano"
+    async_status:
+      jid: "{{ estado_sleep.ansible_job_id }}"
+    register: comprobar_estado_sleep
+    until: comprobar_estado_sleep.finished
+    retries: 9
+    delay: 10
+
+    
+    
+    

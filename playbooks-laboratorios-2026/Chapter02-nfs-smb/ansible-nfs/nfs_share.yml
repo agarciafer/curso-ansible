@@ -1,0 +1,39 @@
+---
+- hosts: clientes
+  become: true
+  become_method: sudo
+  user: root
+
+  tasks:
+  - name: Make sure Directory exists
+    file:
+      path: /share/folder
+      owner: root
+      state: directory
+    ignore_errors: true  
+  
+
+  - name: Install nfs utilities
+    package:
+      name: nfs-utils
+      state: "present"
+    ignore_errors: true  
+
+  - name: the directory is shared
+    copy:
+      content: "/share/folder *(rw,no_root_squash)\n"
+      dest: /etc/exports
+
+  - name: Enable and Start NFS Service
+    service:
+      name: nfs-server
+      state: restarted
+      enabled: yes
+
+ # - name: Open firewall for NFS-Server
+  #  firewalld:
+   #   service: nfs
+    #  immediate: yes
+     # permanent: yes
+      #state: enabled
+...      

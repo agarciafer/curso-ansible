@@ -1,0 +1,17 @@
+---
+- hosts: clientes
+  remote_user: root
+  vars:
+    system_owner: usuario@example.com
+    usuario: Usuario-Berto
+  tasks:
+    - template:
+        src: /etc/ansible/templates/intranet.conf.j2
+        dest: /etc/httpd/conf.d/intranet.conf
+        owner: root
+        group: root
+        mode: 0644
+    - name: httpd is running and enabled
+      service:
+        name: httpd
+        state: restarted

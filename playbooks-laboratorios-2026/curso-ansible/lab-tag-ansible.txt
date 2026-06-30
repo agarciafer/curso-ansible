@@ -1,0 +1,40 @@
+cd /curso-ansible
+cp /etc/ansible/playbook-resueltos/playbook_centos_install_docker.yaml .
+ 
+ 
+ 
+vi playbook_centos_install_docker.yaml
+ansible-playbook --help
+ansible-playbook  --syntax-check playbook_centos_install_docker.yaml
+
+ansible-playbook  --list-tags playbook_centos_install_docker.yaml
+
+ansible-playbook --tag install-docker playbook_centos_install_docker.yaml
+ansible-playbook --skip-tag install-docker playbook_centos_install_docker.yaml
+
+
+Playbook para instalar en caso de que el servidor sea centos instale los paquestes:
+mariadb-server
+php
+httpd
+mc
+
+Se requiere realizarlo con una variables llamada paquetes
+
+---
+- name: Install docker Centos
+  gather_facts: No
+  hosts: clientes
+  user: root
+  vars:
+    paquetes:
+	 - php
+	 - mc
+	 
+  tasks:
+    - name: paquetes
+      yum:
+        name: "{{  item  }}"
+        state: latest
+      loop:  "{{ paquetes }}"
+   when: ansible_facts['distribution'] == 'CentOS'    

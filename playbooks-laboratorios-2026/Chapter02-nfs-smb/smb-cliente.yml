@@ -1,0 +1,47 @@
+---
+- hosts: cliente11
+  become: true
+  become_method: sudo
+  tasks:
+    - name: Install Samba and Samba-Client
+      package:
+        name:
+          - samba
+          - samba-client
+          - cifs-utils
+        state: latest
+      ignore_errors: true  
+    - name: Create a credential txt file
+      copy:
+        content: "username=berto\npassword=redhat\n"
+        dest: /tmp/creds.txt
+        owner: "root"
+        group: "root"
+        mode: "0600"
+    - name: mount directory created
+      file:
+        path: "/mnt/shared"
+        state: directory
+        owner: "root"
+        group: "root"
+
+    - name: Montar recurso SMB y hacerlo persistente en /etc/fstab
+      mount:
+        path: /mnt/shared
+        src: //192.168.33.12/sambasharefolder
+        fstype: cifs
+        opts: credentials=/tmp/creds.txt,file_mode=0644,dir_mode=0755
+        state: mounted
+        #fstab: yes 
+      ignore_errors: yes     
+
+      
+        
+    #- name: Mount the SMB share.
+    #  shell: "mount -t cifs //192.168.33.12/sambasharefolder /mnt/shared -o credentials=/tmp/creds.txt"
+    #  ignore_errors: yes
+      
+    #- name: Borrar fichero credencial
+     # file:
+      #  path: /tmp/creds.txt
+      #  state: absent

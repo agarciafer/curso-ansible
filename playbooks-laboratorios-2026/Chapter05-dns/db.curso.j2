@@ -1,0 +1,36 @@
+$ORIGIN .
+$TTL 259200	; 3 days
+curso.esp		IN SOA	ansiblevm01.curso.esp. root.curso.esp. (
+				2022072702 ; serial
+				86400      ; refresh (1 day)
+				7200       ; retry (2 hours)
+				2592000    ; expire (4 weeks 2 days)
+				172800     ; minimum (2 days)
+				)
+			NS	orion.curso.esp.
+			NS	ansiblevm01.curso.esp.
+			NS  debian10.curso.esp. 
+			MX	3 smtp.curso.esp.
+$ORIGIN curso.esp.
+agendapc5		CNAME	pc5
+curso			A	192.168.2.3
+localhost		A	127.0.0.1
+pc2			A	192.168.2.8
+pc3       A      192.168.2.10
+portatil		A	192.168.2.2
+trasgu			A	192.168.2.150
+orion			A	192.168.2.152
+servidor1       A  192.168.2.33
+debian10         A 192.168.2.10
+sercentos7      A 192.168.2.5
+smtp             A 192.168.2.139
+web1			A 192.168.2.131
+web2			A 192.168.2.132
+television		A 192.168.2.133
+ansiblevm01      A 192.168.2.102
+intranet        CNAME web1
+www               CNAME sercentos7
+webmail             CNAME web1
+
+
+

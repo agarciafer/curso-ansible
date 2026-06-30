@@ -1,0 +1,60 @@
+---
+- hosts: cliente12
+  become: true
+  become_method: sudo
+  tasks:
+    - name: Install Samba and Samba-Client
+      package:
+        name:
+          - samba
+          - samba-client
+          - cifs-utils
+        state: latest
+      ignore_errors: true   
+    - name: Create groups that are allowed
+      group:
+        name: "admins"
+        system: yes
+
+    - name: Add SMB user
+      user:
+        name: "berto"
+        shell: "/sbin/nologin"
+        create_home: no
+        system: yes
+    - name: Set SMB password for user
+      command: smbpasswd -s -a berto
+      args:
+        stdin: "redhat\nredhat"	
+    - name: Add SMB users to the groups that are allowed
+      user:
+        name: "berto"
+        group: "admins"
+        append: "true"
+    - name: Create the directory to share
+      file:
+        path: "/opt/smbfolder"
+        owner: "root"
+        group: "admins"
+        mode: "2775"
+        state: "directory"
+        setype: "samba_share_t"	
+    - name: Add the directory to the smb.conf file
+      blockinfile:
+        path: /etc/samba/smb.conf
+        block: |
+          [sambasharefolder]
+                    path = /opt/smbfolder
+                    writeable = yes
+                    valid users = berto, @admins
+                    write list = @admins
+    - name: Start or restart SMB for changes and enable it
+      service:
+        name: "smb"
+        state: "restarted"
+        enabled: "true"
+    - name: Start or restart SMB for changes and enable it
+      service:
+        name: "nmb"
+        state: "restarted"
+        enabled: "true"

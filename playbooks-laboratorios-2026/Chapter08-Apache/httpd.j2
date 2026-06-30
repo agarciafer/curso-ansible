@@ -1,0 +1,10 @@
+NameVirtualHost {{ ansible_eth1.ipv4.address }}:80
+
+<VirtualHost {{ ansible_eth1.ipv4.address }}:80>
+ServerAdmin admin@server1.curso.esp
+DocumentRoot /var/www/html/
+ServerName intranet2.{{ ansible_eth1.ipv4.address }}.nip.io
+DirectoryIndex index.html index.php inicio.htm
+ErrorLog logs/intranet2-error_log
+CustomLog logs/intranet2-access_log common
+</VirtualHost>

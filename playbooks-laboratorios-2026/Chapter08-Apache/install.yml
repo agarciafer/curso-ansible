@@ -1,0 +1,6 @@
+    - name: Incluir el playbook para configurar Apache HTTP Server
+      include: apache_httpd.yml
+    - name: Incluir el playbook para configurar Nginx
+      include: nginx.yml
+    - name: Incluir el playbook para configurar HAProxy
+      include: haproxy.yml

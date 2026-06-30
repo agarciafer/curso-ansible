@@ -1,0 +1,47 @@
+---
+- name: DNS server playbook
+  hosts: 192.168.2.102
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Install dns service
+      package:
+        name: bind
+        state: latest
+
+    - name: Copy dns main config
+      template:
+        src: "{{ playbook_dir }}/named.conf.j2"
+        dest: /etc/named.conf
+
+    - name: Copy dns forward zone configs
+      template:
+        src: "{{ playbook_dir }}/db.curso.j2"
+        dest: /var/named/db.curso
+
+    - name: Copy dns reverse zone configs
+      template:
+        src: "{{ playbook_dir }}/named.ca.j2"
+        dest: /var/named/named.ca
+        
+    - name: Copy dns client
+      template:
+        src: "{{ playbook_dir }}/resolv.conf.j2"
+        dest: /etc/resolv.conf    
+
+    - name: Start and enable DNS
+      service:
+        name: named
+        state: restarted
+        enabled: true
+
+
+    - name: Install DIG to check configuration
+      package:
+        name: bind-utils
+        state: latest
+
+    - name: Run dig to test configuration
+      command:
+        cmd: "dig  ansiblevm01 @192.168.2.102"

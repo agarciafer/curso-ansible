@@ -1,0 +1,23 @@
+---
+- hosts: 192.168.2.102
+  become: yes
+  become_method: sudo
+  vars:
+    network_connections:
+      - name: eth0
+        state: up
+        type: ethernet
+        ip:
+          route_metric4: 100
+          dhcp4: yes
+          #gateway4: 192.168.2.1
+
+          dns:
+            - 8.8.4.4
+            - 1.1.1.1
+
+         # address:
+          #  - 192.168.2.102/24
+
+  roles:
+    - rhel-system-roles.network

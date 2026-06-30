@@ -1,0 +1,7 @@
+server {
+    listen       80 default_server;
+    server_name  {{ ansible_eth1.ipv4.address }};
+	location /   {
+    root         /srv/website/www;
+}
+}

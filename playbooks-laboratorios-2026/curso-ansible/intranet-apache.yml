@@ -1,0 +1,31 @@
+---
+- hosts: clientes
+  remote_user: root
+  vars:
+    system_owner: usuario@example.com
+    usuario: Usuario-Berto
+  tasks:
+    - name: Remove file (delete file)
+      file:
+        path:  /var/www/html/intranet
+        state: absent
+    - name: Create a directory if it does not exist
+      file:
+        path: /var/www/html/intranet
+        state: directory
+        mode: '0755'
+    - name: Copy using inline content
+      copy:
+        content: '# This file in new'
+        dest: /var/www/html/intranet/index.html
+    - template:
+        src: /etc/ansible/templates/intranet.conf.j2
+        dest: /etc/httpd/conf.d/intranet.conf
+        owner: root
+        group: root
+        mode: 0644
+    - name: httpd is running and enabled
+      service:
+        name: httpd
+        state: restarted
+...

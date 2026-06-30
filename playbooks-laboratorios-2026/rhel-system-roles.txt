@@ -1,0 +1,19 @@
+ https://access.redhat.com/documentation/es-es/red_hat_enterprise_linux/8/html/administration_and_configuration_tasks_using_system_roles_in_rhel/applying-kernel-parameters-using-the-kernel-settings-role_using-ansible-roles-to-permanently-configure-kernel-parameters
+ 
+ https://access.redhat.com/documentation/es-es/red_hat_enterprise_linux/8/html/administration_and_configuration_tasks_using_system_roles_in_rhel/applying-kernel-parameters-using-the-kernel-settings-role_using-ansible-roles-to-permanently-configure-kernel-parameters
+ 
+ yum install  rhel-system-roles
+  rpm -ql rhel-system-roles
+ cd /usr/share/doc/rhel-system-roles/network/
+ 
+ 
+ cd /usr/share/ansible/roles/
+ cp -r * /etc/ansible/roles/
+ 
+# ansible-galaxy list 
+ 
+ /usr/share/ansible/roles/rhel-system-roles.network/README.md
+------------------------------------------------------------------------------------------- 
+ eval $(ssh-agent)
+ ssh-add /root/.ssh/id_rsa
+ 

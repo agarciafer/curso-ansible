@@ -1,0 +1,18 @@
+---
+- hosts: cliente12
+  tasks:
+    - name: bloque ejemplo
+      block:
+        - name: Install cockpit
+          yum:
+            name: "{{ item }}"
+            state: present
+          with_items:
+             - cockpit*
+# start and enable cockpit
+        - name: start cockpit
+          systemd:
+            name: cockpit
+            state: started
+      ignore_errors: true
+      when: ansible_facts['distribution'] == 'CentOS'

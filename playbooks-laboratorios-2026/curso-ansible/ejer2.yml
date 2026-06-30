@@ -1,0 +1,16 @@
+---
+- name: Install docker Centos
+  hosts: clientes
+  user: root
+  vars:
+    paquetes:
+      - php
+      - mc
+  tasks:
+    - name: paquetes
+      yum:
+        name: "{{  item  }}"
+        state: latest
+      loop:  "{{ paquetes }}"
+      when: ansible_facts['distribution'] == 'CentOS'
+...

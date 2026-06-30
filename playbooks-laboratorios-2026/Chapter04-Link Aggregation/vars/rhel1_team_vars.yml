@@ -1,0 +1,6 @@
+---
+team_name: team1
+ipv4_team_address: 192.168.2.250/24
+#ipv6_team_address:  fe80::9029:1a51:454:c2bd/64
+int1: eth2
+int2: eth3
