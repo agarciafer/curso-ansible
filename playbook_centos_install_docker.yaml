@@ -1,0 +1,70 @@
+---
+- name: Instalar Docker y Docker Compose v2 en Rocky Linux 8
+  hosts: clientes
+  strategy: free
+  become: yes
+  tasks:
+    - name: Instalar paquetes requeridos
+      dnf:
+        name:
+          - dnf-plugins-core
+          - device-mapper-persistent-data
+          - lvm2
+        state: present
+      tags:
+        - install-docker
+
+    - name: Configurar el repositorio de Docker
+      ansible.builtin.yum_repository:
+        name: docker
+        description: Docker CE Stable - $basearch
+        baseurl: https://download.docker.com/linux/centos/8/$basearch/stable
+        gpgcheck: yes
+        gpgkey: https://download.docker.com/linux/centos/gpg
+        enabled: yes
+      tags:
+        - install-docker
+
+    - name: Instalar Docker y Docker Compose Plugin
+      dnf:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+        state: present
+      tags:
+        - install-docker
+
+    - name: Iniciar y habilitar el servicio Docker
+      systemd:
+        name: docker
+        state: started
+        enabled: true
+      tags:
+        - inicio-docker
+
+    - name: Verificar la instalación de Docker
+      command: docker --version
+      register: docker_version
+      tags:
+        - verificar-docker
+
+    - name: Mostrar la versión de Docker
+      debug:
+        var: docker_version.stdout
+      tags:
+        - verificar-docker
+
+    - name: Verificar la instalación de Docker Compose v2
+      command: docker compose version
+      register: compose_version
+      tags:
+        - verificar-docker
+
+    - name: Mostrar la versión de Docker Compose v2
+      debug:
+        var: compose_version.stdout
+      tags:
+        - verificar-docker
+
